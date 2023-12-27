@@ -8,6 +8,8 @@ var animated_sprite: AnimatedSprite2D
 const GRAVITY = 1000
 const JUMP_FORCE = -300
 var MOVE_SPEED = 15000
+var PLAYER_LAYER = 1
+var PLATFORM_LAYER = 2
 var climbing = false
 var climbable = false
 # Reference to the crate (assuming it is a RigidBody2D)
@@ -73,11 +75,26 @@ func _process(delta):
 		animated_sprite.play("idle")  # Replace "idle" with the name of your idle animation
 
 	# Check for jumping with the space key
-	if Input.is_action_just_pressed("jump") and (is_on_ground or climbing):
-		# Apply jump force
-		velocity.y = JUMP_FORCE
-		emit_signal("jump_started")
+	if Input.is_action_just_pressed("jump"):
+		if (is_on_ground or climbing):
+			if Input.is_action_pressed("climb_down"):
+				velocity.y = JUMP_FORCE/10
+				emit_signal("jump_started")
+			else:
+				# Apply jump force
+				velocity.y = JUMP_FORCE
+				emit_signal("jump_started")
 		
+	# Check if the player is moving upwards (velocity.y < 0)
+	if velocity.y <= 0 or (Input.is_action_pressed("climb_down") and Input.is_action_pressed("jump")):
+		# Allow collisions with platforms
+		set_collision_layer_value(PLATFORM_LAYER, false)
+		set_collision_mask_value(PLATFORM_LAYER, false)
+	else:
+		# Disable collisions with platforms
+		set_collision_layer_value(PLATFORM_LAYER, true)
+		set_collision_mask_value(PLATFORM_LAYER, true)
+
 
 	# Move and slide
 	var collisions = move_and_collide(velocity * delta)

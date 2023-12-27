@@ -190,7 +190,7 @@ script = ExtResource("3_qya7i")
 position = Vector2(4, -11)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_6bs4c")
-animation = &"climb"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
