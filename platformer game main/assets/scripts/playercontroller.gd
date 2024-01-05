@@ -6,7 +6,7 @@ var is_on_ground: bool = false
 var animated_sprite: AnimatedSprite2D
 
 const GRAVITY = 1000
-const JUMP_FORCE = -300
+const JUMP_FORCE = -280
 var MOVE_SPEED = 15000
 var PLAYER_LAYER = 1
 var PLATFORM_LAYER = 2
@@ -106,13 +106,12 @@ func _process(delta):
 
 
 func interact_with_crate(move_direction, collision):
-	if crate:
-		# Check if there is a collision and the collider is the crate
-		if collision and collision.get_collider() == crate:
-			# Check if the player is above the crate
-			if global_position.y > crate.global_position.y and is_on_ground:
-				# Optionally, you can add a limit to how far the crate can move away from the player 
-				crate.global_position = crate.global_position + Vector2(move_direction * 5, 0)  # Adjust 32 based on your preference
+	# Check if there is a collision and the collider is the crate
+	if collision and collision.get_collider().is_in_group("pushable"):
+		# Check if the player is above the crate
+		if global_position.y > collision.get_collider().global_position.y and is_on_ground:
+			# Optionally, you can add a limit to how far the crate can move away from the player 
+			collision.get_collider().global_position = collision.get_collider().global_position + Vector2(move_direction * 5, 0)  # Adjust 32 based on your preference
 
 
 func _on_ladder_body_entered(body):

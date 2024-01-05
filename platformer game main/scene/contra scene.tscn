@@ -157,7 +157,7 @@ size = Vector2(24, 39)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jnaa7"]
 size = Vector2(64, 64)
 
-[node name="Node2D" type="Node2D"]
+[node name="contra\'s_scene" type="Node2D"]
 position = Vector2(503, 278)
 
 [node name="Tree-house" type="Sprite2D" parent="."]
